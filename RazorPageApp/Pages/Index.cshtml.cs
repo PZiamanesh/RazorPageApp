@@ -1,18 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using RazorPageApp.Infrastructure;
+using RazorPageApp.Models;
 
 namespace RazorPageApp.Pages
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
-        {
+        private readonly RazorAppContext _appContext;
+        public List<Article> Articles { get; set; }
 
+        public IndexModel(RazorAppContext appContext)
+        {
+            _appContext = appContext;
         }
 
-        public RedirectToPageResult OnGetLoad()
+        public void OnGet()
         {
-           return RedirectToPage("./Privacy");
+            Articles = _appContext.Articles.OrderByDescending(x => x.Id).ToList();
         }
     }
 }
